@@ -1,0 +1,159 @@
+[build-system]
+requires = [ "poetry-core>=1.0.0" ]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "hopi"
+version = "2.0.0"
+description = "MockHoPi"
+authors = ["Lele Gaifax <lele@metapensiero.it>"]
+license = "No license"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Framework :: Pyramid",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Internet :: WWW/HTTP :: WSGI :: Application"
+]
+keywords = [
+  "web",
+  "pyramid"
+]
+exclude = [
+  "hopi/*/locale/mapping.cfg",
+  "hopi/*/locale/*.pot",
+  "hopi/*/locale/*/LC_MESSAGES/*.po",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+#"amqp" = "5.1.1"
+"babel" = "2.12.1"
+#"celery" = "5.3.4"
+"chameleon" = "4.1.0"
+"codext" = "1.15.1"
+"colander" = "2.0"
+"colorlog" = "6.7.0"
+"deform" = "2.0.15"
+"geopy" = "2.4.0"
+"html-diff" = "0.4.1"
+#"itsdangerous" = "2.1.2"
+"jinja2" = "3.1.2"
+#"kombu" = "5.3.2"
+#"lxml" = "4.9.3"
+"markupsafe" = "2.1.3"
+"metapensiero.deform.semantic-ui" = "0.9"
+"metapensiero.markup.semtext" = "0.28"
+"metapensiero.sphinx.patchdb" = "4.0.dev12"
+"metapensiero.sqlalchemy.dbloady" = "3.0.dev3"
+"metapensiero.sqlalchemy.proxy" = "6.0.dev5"
+#"pglast" = "5.4"
+#"pillow" = "10.0.0"  # must match what's available in pinned nixpjgs!
+"plaster" = "1.1.2"
+"plaster-pastedeploy" = "1.0.1"
+"psycopg" = "3.1.10"
+#"psycopg-c" = "3.1.10"
+"psycopg2" = "2.9.7"
+"pycountry" = "22.3.5"
+"pyowm" = "3.3.0"
+"pyphen" = "0.14.0"
+"pyramid" = "2.0.2"
+"pyramid-chameleon" = "0.3"
+"pyramid-jinja2" = "2.10"
+"pyramid-tm" = "2.5"
+"pyrxp" = "3.0.1"
+#"python-rapidjson" = "1.11"
+"pytz" = "2023.3.post1"
+"redis" = "4.6.0"
+"reportlab" = "4.0.4"
+"requests" = "2.31.0"
+"ruamel.yaml" = "0.17.32"
+#"ruamel.yaml.clib" = "0.2.7"
+"segno" = "1.5.2"
+"sly" = "0.5"
+"sqlalchemy" = "2.0.20"
+"transaction" = "3.1.0"
+"translationstring" = "1.4"
+"urlpy" = "0.5"
+"waitress" = "2.1.2"
+"xlsxwriter" = "3.1.3"
+"zeep" = "4.2.1"
+"zipp" = "3.16.2"
+"zope.sqlalchemy" = "3.1"
+
+[tool.poetry.dev-dependencies]
+# Tests
+coverage = { extras = ["toml"], version = "7.3.1" }
+pytest = "7.4.2"
+webtest = "3.0.0"
+
+# I18n
+lingua = "4.15.0"
+
+# Maintenance
+"metapensiero.tool.tinject" = "1.2"
+
+# Docs
+sphinx = "7.2.2"
+sphinxcontrib-plantuml = "0.26"
+sphinxcontrib-applehelp = "1.0.4"
+sphinxcontrib-devhelp = "1.0.2"
+sphinxcontrib-htmlhelp = "2.0.1"
+sphinxcontrib-qthelp = "1.0.3"
+sphinxcontrib-serializinghtml = "1.1.5"
+furo = "2023.9.10"
+#"metapensiero.sphinx.autodoc-sa" = "2.2.dev1"
+"metapensiero.sphinx.autodoc_sa" = {git="https://gitlab.com/metapensiero/metapensiero.sphinx.autodoc_sa.git", rev="b6aa3e03044bf6531a611adcdaefc9524c73de09"}
+
+# Run
+hupper = "1.12"
+watchdog = "3.0.0"
+
+[tool.poetry.scripts]
+hopi-db = "hopi.model.__main__:main"
+hopi-ioy = "hopi.model.entities.ioy:main"
+hopi-render = "hopi.renderer.__main__:main"
+hopi-layout = "hopi.renderer.layout.__main__:main"
+hopi-slurp = "hopi.slurper.contents.__main__:main"
+
+[tool.poetry.plugins."paste.app_factory"]
+main = "hopi.app:main"
+
+[tool.pytest.ini_options]
+addopts = "-ra --doctest-modules --ignore hopi/model/data/preloady.py"
+filterwarnings = [
+    "ignore::DeprecationWarning:importlib._bootstrap",
+    "ignore::DeprecationWarning:kombu.utils.compat",
+    "ignore::DeprecationWarning:pkg_resources"
+]
+
+[tool.coverage.run]
+parallel = true
+data_file = "$SPOOL_DIR/coverage"
+source = [ "hopi" ]
+omit = [
+    "hopi/atc/__main__.py",
+    "hopi/model/__main__.py",
+    "hopi/model/data/test/*.py",
+    "hopi/renderer/__main__.py",
+    "hopi/renderer/layout/__main__.py",
+    "hopi/slurper/contents/__main__.py",
+    "hopi/slurper/forecasts/meteo3b/__main__.py"
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:"
+]
